@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Quiz by Dabi</title>
+    <style>
+        /* =========================================
+           RESET E VARIABILI DI STILE
+           ========================================= */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body { 
+            /* Font pulito e moderno, ideale per interfacce flat */
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            background-color: #0a0f24; /* Midnight Blue profondo */
+            color: #ffffff; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px;
+            text-transform: uppercase; /* Stile tipografico manga/gaming */
+        }
+        
+        /* =========================================
+           CONTENITORI PRINCIPALI
+           ========================================= */
+        .quiz-container { 
+            background-color: #11183b; /* Midnight Blue leggermente più chiaro */
+            padding: 40px; 
+            border-radius: 0; /* Niente spigoli arrotondati */
+            /* Hard Shadow: offset-x, offset-y, blur (0), color */
+            box-shadow: 12px 12px 0px #00e5ff; 
+            max-width: 600px; 
+            width: 100%; 
+            border: 3px solid #00e5ff; /* Bordo netto ciano */
+            position: relative;
+        }
+        
+        .quiz-header {
+            margin-bottom: 30px;
+        }
+
+        /* =========================================
+           BARRA DI PROGRESSIONE
+           ========================================= */
+        .progress-text {
+            font-size: 14px;
+            color: #00e5ff;
+            margin-bottom: 12px;
+            display: block;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #0a0f24;
+            border: 2px solid #00e5ff;
+            border-radius: 0;
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #ffea00; /* Giallo neon pieno, niente gradienti */
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+        
+        h2 { 
+            font-size: 24px;
+            font-weight: 800;
+            line-height: 1.5;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+        
+        .answers-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        /* =========================================
+           PULSANTI DELLE RISPOSTE
+           ========================================= */
+        .btn { 
+            display: block; 
+            width: 100%; 
+            background-color: #0a0f24; 
+            color: #ffffff; 
+            border: 2px solid #ffffff;
+            padding: 16px 20px; 
+            border-radius: 0; 
+            font-size: 16px; 
+            font-weight: 700;
+            cursor: pointer; 
+            text-align: left;
+            text-transform: uppercase;
+            box-shadow: 4px 4px 0px #ffffff;
+            transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease; 
+        }
+        
+        .btn:hover:not(:disabled) { 
+            background-color: #ffea00; 
+            border-color: #ffea00;
+            color: #0a0f24;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px #00e5ff;
+        }
+
+        .btn:active:not(:disabled) {
+            transform: translate(2px, 2px);
+            box-shadow: 2px 2px 0px #00e5ff;
+        }
+
+        /* Stati di Feedback Visivo */
+        .btn.correct {
+            background-color: #00ff66 !important;
+            border-color: #00ff66 !important;
+            color: #0a0f24 !important;
+            box-shadow: 4px 4px 0px #009933 !important;
+        }
+
+        .btn.wrong {
+            background-color: #ff0055 !important;
+            border-color: #ff0055 !important;
+            color: #ffffff !important;
+            box-shadow: 4px 4px 0px #990033 !important;
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+        }
+
+        /* =========================================
+           CONTROLLI DI FLUSSO (AVANTI E RIPROVA)
+           ========================================= */
+        .action-btn {
+            background: #00e5ff;
+            color: #0a0f24;
+            border: 2px solid #00e5ff;
+            padding: 16px 30px;
+            border-radius: 0;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 6px 6px 0px #ffea00;
+            width: 100%;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+
+        .action-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 8px 8px 0px #ffea00;
+        }
+
+        .action-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0px #ffea00;
+        }
+
+        /* Nascondo il pulsante avanti di default */
+        #next-btn {
+            display: none; 
+            margin-top: 10px;
+        }
+
+        /* =========================================
+           SCHERMATA DEI RISULTATI
+           ========================================= */
+        .result-view {
+            text-align: center;
+            display: none;
+        }
+
+        .score-box {
+            font-size: 64px;
+            font-weight: 900;
+            color: #ffea00;
+            text-shadow: 4px 4px 0px #ff0055; /* Effetto pop per il testo */
+            margin: 30px 0;
+        }
+
+        .feedback-text {
+            font-size: 20px;
+            color: #ffffff;
+            margin-bottom: 40px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div id="quiz-view">
+        <div class="quiz-header">
+            <span class="progress-text" id="progress-text">Domanda 1 di 3</span>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <h2 id="question">Caricamento della domanda...</h2>
+        </div>
+        <div class="answers-grid" id="answers"></div>
+        
+        <button id="next-btn" class="action-btn" onclick="nextQuestion()">Prossima Domanda &rarr;</button>
+    </div>
+
+    <div class="result-view" id="result-view">
+        <h2>Missione Completata!</h2>
+        <div class="score-box" id="score-text">0 / 0</div>
+        <p class="feedback-text" id="feedback"></p>
+        <button class="action-btn" onclick="restartQuiz()">Riprova il Quiz</button>
+    </div>
+</div>
+
+<script>
+    // Configurazione domande e risposte
+    const quizData = [
+        { 
+            q: "Chi è la ragazza più bella di Naruto?", 
+            a: ["Sakura Haruno", "Hinata Hyuga", "Temari", "Kurenai Yuhi"], 
+            correct: 2 
+        },
+        { 
+            q: "Quanto è alto Dabi?", 
+            a: ["170 cm", "180 cm", "190 cm", "200 cm"], 
+            correct: 1 
+        },
+        {
+            q: "Qual è il vero nome di L in Death Note?",
+            a: ["Light Yagami", "L Lawliet", "Nate River", "Mihael Keehl"],
+            correct: 1
+        }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    // Riferimenti agli elementi del DOM
+    const quizView = document.getElementById("quiz-view");
+    const resultView = document.getElementById("result-view");
+    const questionEl = document.getElementById("question");
+    const answersContainer = document.getElementById("answers");
+    const progressText = document.getElementById("progress-text");
+    const progressFill = document.getElementById("progress-fill");
+    const scoreText = document.getElementById("score-text");
+    const feedbackEl = document.getElementById("feedback");
+    const nextBtn = document.getElementById("next-btn");
+
+    function loadQuiz() {
+        if (currentQuestion < quizData.length) {
+            quizView.style.display = "block";
+            resultView.style.display = "none";
+            nextBtn.style.display = "none"; // Nascondi il pulsante avanti
+
+            const current = quizData[currentQuestion];
+            
+            // Aggiorna testo e barra progresso
+            progressText.innerText = `Domanda ${currentQuestion + 1} di ${quizData.length}`;
+            const progressPercent = (currentQuestion / quizData.length) * 100;
+            progressFill.style.width = `${progressPercent}%`;
+
+            // Aggiorna testo domanda
+            questionEl.innerText = current.q;
+            
+            // Genera bottoni risposte
+            answersContainer.innerHTML = "";
+            current.a.forEach((ans, index) => {
+                const button = document.createElement("button");
+                button.innerText = ans;
+                button.classList.add("btn");
+                // Passo l'indice al momento del click per le verifiche
+                button.onclick = () => checkAnswer(index, button);
+                answersContainer.appendChild(button);
+            });
+        } else {
+            showResults();
+        }
+    }
+
+    // Nuova logica di validazione della risposta
+    function checkAnswer(selectedIndex, clickedButton) {
+        const correctIndex = quizData[currentQuestion].correct;
+        const allButtons = answersContainer.querySelectorAll('.btn');
+
+        // 1. Disabilita tutti i pulsanti per impedire click multipli
+        allButtons.forEach(btn => {
+            btn.disabled = true;
+        });
+
+        // 2. Logica di feedback visivo e punteggio
+        if (selectedIndex === correctIndex) {
+            clickedButton.classList.add('correct');
+            score++;
+        } else {
+            clickedButton.classList.add('wrong');
+            // Mostra comunque quale era la risposta corretta
+            allButtons[correctIndex].classList.add('correct');
+        }
+
+        // 3. Mostra il pulsante per passare alla prossima domanda
+        nextBtn.style.display = "block";
+    }
+
+    // Nuova funzione per gestire il passaggio alla domanda successiva
+    function nextQuestion() {
+        currentQuestion++;
+        loadQuiz();
+    }
+
+    function showResults() {
+        quizView.style.display = "none";
+        resultView.style.display = "block";
+        progressFill.style.width = "100%";
+        
+        scoreText.innerText = `${score} / ${quizData.length}`;
+        
+        const percentuale = (score / quizData.length) * 100;
+        if (percentuale === 100) {
+            feedbackEl.innerText = "S RANK! Hai risposto correttamente a tutte le domande! 🏆";
+        } else if (percentuale >= 60) {
+            feedbackEl.innerText = "A RANK! Grande bro, hai superato il quiz! ✨";
+        } else {
+            feedbackEl.innerText = "GAME OVER! Riprova fai schifo. 🎮";
+        }
+    }
+
+    function restartQuiz() {
+        currentQuestion = 0;
+        score = 0;
+        loadQuiz();
+    }
+
+    // Inizializzazione
+    loadQuiz();
+</script>
+
+</body>
+</html>
