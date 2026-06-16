@@ -178,7 +178,7 @@
 <div class="quiz-container">
     <div id="quiz-view">
         <div class="quiz-header">
-            <span class="progress-text" id="progress-text">Domanda 1 di 3</span>
+            <span class="progress-text" id="progress-text">Domanda 1 di 10</span>
             <div class="progress-bar">
                 <div class="progress-fill" id="progress-fill"></div>
             </div>
@@ -200,19 +200,54 @@
 <script>
     const quizData = [
         { 
-            q: "Chi è la ragazza più bella di Naruto?", 
-            a: ["Sakura Haruno", "Hinata Hyuga", "Temari", "Kurenai Yuhi"], 
+            q: "Nel famoso otome francese Amour Sucré chi si diploma al liceo con il massimo dei voti insieme a Nathaniel?", 
+            a: ["Kentin", "Armin", "Castiel", "Lysandre"], 
             correct: 2 
         },
         { 
-            q: "Quanto è alto Dabi?", 
-            a: ["170 cm", "180 cm", "190 cm", "200 cm"], 
+            q: "Nell'anime Angel Sanctuary di chi è la reincarnazione Setsuna Mudo?", 
+            a: ["Sevoftarta", "Djibril (Arcangelo Gabriele)", "Lucifer", "Alexiel"], 
+            correct: 3 
+        },
+        {
+            q: "Nel famoso otome fantasy Eldarya quale era la vera identità di Ashkore?",
+            a: ["Ezarel", "Lance", "Valkyon", "Leiftan"],
             correct: 1 
         },
         {
-            q: "Qual è il vero nome di L in Death Note?",
-            a: ["Light Yagami", "L Lawliet", "Nate River", "Mihael Keehl"],
-            correct: 1
+            q: "In Bungo Stray Dogs chi era il 5 e ultimo membro della Decomposizione dell'Angelo, conosciuto come Kamui?",
+            a: ["Mushitaro Oguri", "Tachihara Michizou", "Bram Stoker", "Ochi Fukuchi"],
+            correct: 3 
+        },
+        {
+            q: "In Final Fantasy VIII qual è il continente con il territorio più vasto?",
+            a: ["Trabia", "Galbadia", "Esthar", "Centra"],
+            correct: 2 
+        },
+        {
+            q: "Alla fine di Gintama a quanto ammontano le vittorie di Gintoki contro Takasugi?",
+            a: ["247", "427", "127", "347"],
+            correct: 0 
+        },
+        {
+            q: "Nell'anime X/1999 quale tra questi personaggi NON è uno sei sette sigilli?",
+            a: ["Sorata Arisugawa", "Karen Kasumi", "Subaru Sumeragi", "Kusanagi Shiyu"],
+            correct: 3 
+        },
+        {
+            q: "Nell'anime Tasokare Hotel quale tra questi personaggi alla fine della storia NON sopravvive?",
+            a: ["Neko Tsukahara", "Ruri", "Masaki Osoto", "Haruto Atori"],
+            correct: 2 
+        },
+        {
+            q: "Nell'anime Durarara!! quale era il nickname usato da Izaya Orihara nella chat della gang Dollars?",
+            a: ["Setton", "Taro Tanaka", "Kanra", "Bakyura"],
+            correct: 2 
+        },
+        {
+            q: "Qual è il vero nome del Samurai Himura Kenshin?",
+            a: ["Shinta", "Enishi", "Yahiko", "Kenji"],
+            correct: 0 
         }
     ];
 
@@ -292,10 +327,16 @@
         const percentuale = (score / quizData.length) * 100;
         if (percentuale === 100) {
             feedbackEl.innerText = "S RANK! Hai risposto correttamente a tutte le domande, sei proprio un grande! 🏆";
-        } else if (percentuale >= 60) {
+        } else if (percentuale <= 90) {
             feedbackEl.innerText = "A RANK! Hai superato il quiz, complimenti! ✨";
+        }  else if (percentuale <= 80) {
+            feedbackEl.innerText = "B RANK! Hai superato il quiz, complimenti! ✨";
+        }  else if (percentuale <= 70) {
+            feedbackEl.innerText = "C RANK! Hai superato il quiz, complimenti! ✨";
+        }  else if (percentuale <= 60) {
+            feedbackEl.innerText = "D RANK! Hai superato il quiz, complimenti! ✨";
         } else {
-            feedbackEl.innerText = "GAME OVER! Riprova fai schifo. 🎮";
+            feedbackEl.innerText = "Riprova fai schifo. 🎮";
         }
     }
 
