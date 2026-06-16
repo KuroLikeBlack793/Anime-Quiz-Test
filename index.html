@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anime Quiz by Dabi</title>
     <style>
-        /* =========================================
-           RESET E VARIABILI DI STILE
-           ========================================= */
         * { 
             box-sizing: border-box; 
             margin: 0; 
@@ -15,40 +12,31 @@
         }
         
         body { 
-            /* Font pulito e moderno, ideale per interfacce flat */
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
-            background-color: #0a0f24; /* Midnight Blue profondo */
+            background-color: #0a0f24;
             color: #ffffff; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
             min-height: 100vh; 
             padding: 20px;
-            text-transform: uppercase; /* Stile tipografico manga/gaming */
+            text-transform: uppercase;
         }
         
-        /* =========================================
-           CONTENITORI PRINCIPALI
-           ========================================= */
         .quiz-container { 
-            background-color: #11183b; /* Midnight Blue leggermente più chiaro */
+            background-color: #11183b;
             padding: 40px; 
-            border-radius: 0; /* Niente spigoli arrotondati */
-            /* Hard Shadow: offset-x, offset-y, blur (0), color */
-            box-shadow: 12px 12px 0px #00e5ff; 
+            border-radius: 0;
             max-width: 600px; 
             width: 100%; 
-            border: 3px solid #00e5ff; /* Bordo netto ciano */
+            border: 3px solid #00e5ff;
             position: relative;
         }
         
         .quiz-header {
             margin-bottom: 30px;
         }
-
-        /* =========================================
-           BARRA DI PROGRESSIONE
-           ========================================= */
+        
         .progress-text {
             font-size: 14px;
             color: #00e5ff;
@@ -70,7 +58,7 @@
 
         .progress-fill {
             height: 100%;
-            background: #ffea00; /* Giallo neon pieno, niente gradienti */
+            background: #ffea00;
             width: 0%;
             transition: width 0.4s ease;
         }
@@ -89,10 +77,7 @@
             gap: 15px;
             margin-bottom: 25px;
         }
-
-        /* =========================================
-           PULSANTI DELLE RISPOSTE
-           ========================================= */
+        
         .btn { 
             display: block; 
             width: 100%; 
@@ -106,45 +91,36 @@
             cursor: pointer; 
             text-align: left;
             text-transform: uppercase;
-            box-shadow: 4px 4px 0px #ffffff;
-            transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.2s ease; 
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease; 
         }
         
         .btn:hover:not(:disabled) { 
             background-color: #ffea00; 
             border-color: #ffea00;
             color: #0a0f24;
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px #00e5ff;
         }
 
         .btn:active:not(:disabled) {
-            transform: translate(2px, 2px);
-            box-shadow: 2px 2px 0px #00e5ff;
+            background-color: #ccbc00;
+            border-color: #ccbc00;
         }
 
-        /* Stati di Feedback Visivo */
         .btn.correct {
             background-color: #00ff66 !important;
             border-color: #00ff66 !important;
             color: #0a0f24 !important;
-            box-shadow: 4px 4px 0px #009933 !important;
         }
 
         .btn.wrong {
             background-color: #ff0055 !important;
             border-color: #ff0055 !important;
             color: #ffffff !important;
-            box-shadow: 4px 4px 0px #990033 !important;
         }
 
         .btn:disabled {
             cursor: not-allowed;
         }
 
-        /* =========================================
-           CONTROLLI DI FLUSSO (AVANTI E RIPROVA)
-           ========================================= */
         .action-btn {
             background: #00e5ff;
             color: #0a0f24;
@@ -155,30 +131,26 @@
             font-weight: 800;
             cursor: pointer;
             text-transform: uppercase;
-            box-shadow: 6px 6px 0px #ffea00;
             width: 100%;
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
 
         .action-btn:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 8px 8px 0px #ffea00;
+            background-color: #ffea00;
+            border-color: #ffea00;
+            color: #0a0f24;
         }
 
         .action-btn:active {
-            transform: translate(4px, 4px);
-            box-shadow: 2px 2px 0px #ffea00;
+            background-color: #ccbc00;
+            border-color: #ccbc00;
         }
 
-        /* Nascondo il pulsante avanti di default */
         #next-btn {
             display: none; 
             margin-top: 10px;
         }
 
-        /* =========================================
-           SCHERMATA DEI RISULTATI
-           ========================================= */
         .result-view {
             text-align: center;
             display: none;
@@ -188,8 +160,8 @@
             font-size: 64px;
             font-weight: 900;
             color: #ffea00;
-            text-shadow: 4px 4px 0px #ff0055; /* Effetto pop per il testo */
             margin: 30px 0;
+            letter-spacing: 2px;
         }
 
         .feedback-text {
@@ -226,7 +198,6 @@
 </div>
 
 <script>
-    // Configurazione domande e risposte
     const quizData = [
         { 
             q: "Chi è la ragazza più bella di Naruto?", 
@@ -248,7 +219,6 @@
     let currentQuestion = 0;
     let score = 0;
 
-    // Riferimenti agli elementi del DOM
     const quizView = document.getElementById("quiz-view");
     const resultView = document.getElementById("result-view");
     const questionEl = document.getElementById("question");
@@ -263,25 +233,22 @@
         if (currentQuestion < quizData.length) {
             quizView.style.display = "block";
             resultView.style.display = "none";
-            nextBtn.style.display = "none"; // Nascondi il pulsante avanti
+            nextBtn.style.display = "none";
 
             const current = quizData[currentQuestion];
-            
-            // Aggiorna testo e barra progresso
+
             progressText.innerText = `Domanda ${currentQuestion + 1} di ${quizData.length}`;
             const progressPercent = (currentQuestion / quizData.length) * 100;
             progressFill.style.width = `${progressPercent}%`;
 
-            // Aggiorna testo domanda
             questionEl.innerText = current.q;
-            
-            // Genera bottoni risposte
+
             answersContainer.innerHTML = "";
             current.a.forEach((ans, index) => {
                 const button = document.createElement("button");
                 button.innerText = ans;
                 button.classList.add("btn");
-                // Passo l'indice al momento del click per le verifiche
+
                 button.onclick = () => checkAnswer(index, button);
                 answersContainer.appendChild(button);
             });
@@ -290,31 +257,26 @@
         }
     }
 
-    // Nuova logica di validazione della risposta
     function checkAnswer(selectedIndex, clickedButton) {
         const correctIndex = quizData[currentQuestion].correct;
         const allButtons = answersContainer.querySelectorAll('.btn');
 
-        // 1. Disabilita tutti i pulsanti per impedire click multipli
         allButtons.forEach(btn => {
             btn.disabled = true;
         });
 
-        // 2. Logica di feedback visivo e punteggio
         if (selectedIndex === correctIndex) {
             clickedButton.classList.add('correct');
             score++;
         } else {
             clickedButton.classList.add('wrong');
-            // Mostra comunque quale era la risposta corretta
+
             allButtons[correctIndex].classList.add('correct');
         }
 
-        // 3. Mostra il pulsante per passare alla prossima domanda
         nextBtn.style.display = "block";
     }
 
-    // Nuova funzione per gestire il passaggio alla domanda successiva
     function nextQuestion() {
         currentQuestion++;
         loadQuiz();
@@ -343,7 +305,6 @@
         loadQuiz();
     }
 
-    // Inizializzazione
     loadQuiz();
 </script>
 
