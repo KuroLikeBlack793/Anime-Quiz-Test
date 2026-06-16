@@ -327,13 +327,13 @@
         const percentuale = (score / quizData.length) * 100;
         if (percentuale === 100) {
             feedbackEl.innerText = "S RANK! Hai risposto correttamente a tutte le domande, sei proprio un grande! 🏆";
-        } else if (percentuale <= 90) {
+        } else if (percentuale >= 90) {
             feedbackEl.innerText = "A RANK! Hai superato il quiz, complimenti! ✨";
-        }  else if (percentuale <= 80) {
+        }  else if (percentuale >= 80) {
             feedbackEl.innerText = "B RANK! Hai superato il quiz, complimenti! ✨";
-        }  else if (percentuale <= 70) {
+        }  else if (percentuale >= 70) {
             feedbackEl.innerText = "C RANK! Hai superato il quiz, complimenti! ✨";
-        }  else if (percentuale <= 60) {
+        }  else if (percentuale >= 60) {
             feedbackEl.innerText = "D RANK! Hai superato il quiz, complimenti! ✨";
         } else {
             feedbackEl.innerText = "Riprova fai schifo. 🎮";
