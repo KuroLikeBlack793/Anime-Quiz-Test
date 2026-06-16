@@ -218,7 +218,7 @@
     </div>
 
     <div class="result-view" id="result-view">
-        <h2>Missione Completata!</h2>
+        <h2>Quiz Completato!</h2>
         <div class="score-box" id="score-text">0 / 0</div>
         <p class="feedback-text" id="feedback"></p>
         <button class="action-btn" onclick="restartQuiz()">Riprova il Quiz</button>
@@ -329,9 +329,9 @@
         
         const percentuale = (score / quizData.length) * 100;
         if (percentuale === 100) {
-            feedbackEl.innerText = "S RANK! Hai risposto correttamente a tutte le domande! 🏆";
+            feedbackEl.innerText = "S RANK! Hai risposto correttamente a tutte le domande, sei proprio un grande! 🏆";
         } else if (percentuale >= 60) {
-            feedbackEl.innerText = "A RANK! Grande bro, hai superato il quiz! ✨";
+            feedbackEl.innerText = "A RANK! Hai superato il quiz, complimenti! ✨";
         } else {
             feedbackEl.innerText = "GAME OVER! Riprova fai schifo. 🎮";
         }
